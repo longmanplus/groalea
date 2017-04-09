@@ -334,10 +334,11 @@ class Parser(object):
         c4array = Color4Array(lidx4)
         return (pgl.PointSet(v3array, c4array, pointSize), None)
 
-    def NURBSCurve(self, ctrlpoints, dimension, **kwds):
+    def NURBSCurve(self, ctrlpoints, dimension, degree, **kwds):
         ctrlpoints = str(ctrlpoints)
         ctrlpoints = [float(num) for num in ctrlpoints.split(",")]
         dimension = int(dimension)
+        degree = int(degree)
         items, chunk = ctrlpoints, dimension
         pointArray = zip(*[iter(items)] * chunk)
 
@@ -350,7 +351,7 @@ class Parser(object):
             for item in v4array:
                 parray.append(Vector3(item,1))
 
-            return (pgl.NurbsCurve2D(parray), None)
+            return (pgl.NurbsCurve2D(parray, degree), None)
         elif (dimension == 3):
             v4array = []
             for item in pointArray:
@@ -359,7 +360,7 @@ class Parser(object):
             parray = pgl.Point4Array(0)
             for item in v4array:
                 parray.append(Vector4(item,1))
-            return (pgl.NurbsCurve(parray), None)
+            return (pgl.NurbsCurve(parray, degree), None)
 
     def NURBSSurface(self, ctrlpoints, uSize, vSize, uDegree, vDegree, dimension, **kwds):
         ctrlpoints = str(ctrlpoints)
